@@ -17,11 +17,9 @@ async function main() {
         return
     }
     const branch = github.context.payload.pull_request.head.ref;
-    const headSha = github.context.payload.pull_request.head.sha;
 
     // console.log({eventName, sha, headSha, branch, owner, repo});
     const token = core.getInput('access_token', {required: true});
-    const runNumber: number = Number(core.getInput('run_number', {required: true}));
     console.log(`Found token: ${token ? 'yes' : 'no'}`);
     const octokit = new github.GitHub(token);
 
@@ -42,11 +40,13 @@ async function main() {
     })).data;
 
     const pull_request = github.context.payload.pull_request
+    const maxRunNumber = Math.max.apply(Math, runs.workflow_runs.map(run => run.run_number))
     const runningWorkflows = runs.workflow_runs.filter(
-        run => run.head_sha !== headSha && // PR смотрит на другой коммит
+        run =>
+            // run.head_sha !== pull_request.head.sha && // PR смотрит на другой коммит
             run.status !== 'completed' &&  // PR не собран
             run.pull_requests.some(pr => pr.number === pull_request.number) &&
-            run.run_number < runNumber
+            run.run_number < maxRunNumber
     );
     console.log(`Found ${runningWorkflows.length} runs in progress.`);
     for (const {id, head_sha, status} of runningWorkflows) {
