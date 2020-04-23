@@ -1,3 +1,6 @@
+## Info
+GitHub Actions plugin to cancel previous pull_request checks. Helps to save money on GitHub Actions runs.
+
 ## Usage
 ```yaml
 name: Pull Request Cancel Example
@@ -11,7 +14,7 @@ jobs:
       - run: sleep 10
       - run: sleep 10
       
-      - uses: tutu-ru-mobile/cancel-workflow-action@master
+      - uses: tutu-ru-mobile/cancel-previous-pull-request@master
         with:
           access_token: "${{ secrets.GITHUB_TOKEN }}"
           
