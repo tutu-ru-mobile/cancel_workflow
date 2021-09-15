@@ -4228,12 +4228,13 @@ async function main() {
         console.error(`can't find workflow ${github.context.workflow}`);
         return;
     }
+    console.log("branch", branch);
     console.log("workflow: ", workflow);
     const runs = (await octokit.actions.listWorkflowRuns({
         owner,
         repo,
         workflow_id: workflow.id,
-        branch
+        branch: "master"
     })).data;
     console.log(`runs.workflow_runs.length: ${runs.workflow_runs.length}`);
     const runningWorkflows = runs.workflow_runs.filter(run => run.status !== 'completed' &&
