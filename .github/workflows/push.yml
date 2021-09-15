@@ -6,9 +6,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo 'Running now'
-      - run: sleep 10
-      - run: sleep 10
-      - run: sleep 10
+      - run: sleep 2
+#      - run: sleep 10
+#      - run: sleep 10
       - uses: tutu-ru-mobile/cancel_workflow@master
         with:
           access_token: "${{ secrets.GITHUB_TOKEN }}"

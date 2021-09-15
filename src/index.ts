@@ -35,12 +35,13 @@ async function main() {
         console.error(`can't find workflow ${github.context.workflow}`)
         return
     }
+    console.log("branch", branch)
     console.log("workflow: ", workflow)
     const runs = (await octokit.actions.listWorkflowRuns({
         owner,
         repo,
         workflow_id: workflow.id,
-        branch
+        branch: "master"//branch
     })).data;
 
 //     const pull_request = github.context.payload.pull_request
