@@ -4240,6 +4240,7 @@ async function main() {
     const runningWorkflows = runs.workflow_runs.filter(run => run.status !== 'completed' &&
         run.run_number !== workflow.id);
     console.log(`Found ${runningWorkflows.length} runs in progress.`);
+    console.log("runningWorkflows", runningWorkflows);
     if (runningWorkflows.length > 0) {
         console.log("cancel current run, workflow.id: ", workflow.id);
         const res = await octokit.actions.cancelWorkflowRun({
