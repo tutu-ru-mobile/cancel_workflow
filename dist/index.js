@@ -4235,6 +4235,7 @@ async function main() {
         workflow_id: workflow.id,
         branch
     })).data;
+    console.log(`runs.workflow_runs.length: ${runs.workflow_runs.length}`);
     const runningWorkflows = runs.workflow_runs.filter(run => run.status !== 'completed' &&
         run.run_number !== workflow.id);
     console.log(`Found ${runningWorkflows.length} runs in progress.`);

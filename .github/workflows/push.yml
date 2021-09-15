@@ -1,5 +1,5 @@
-name: Pull Request Workflow Cancel Example
-on: [pull_request]
+name: Push Workflow Cancel Example
+on: [push]
 
 jobs:
   hello:
@@ -9,7 +9,7 @@ jobs:
       - run: sleep 10
       - run: sleep 10
       - run: sleep 10
-      - uses: tutu-ru-mobile/cancel-previous-pull-request@master
+      - uses: tutu-ru-mobile/cancel_workflow
         with:
           access_token: "${{ secrets.GITHUB_TOKEN }}"
       - run: sleep 10
