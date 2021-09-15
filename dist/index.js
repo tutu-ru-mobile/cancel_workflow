@@ -4238,20 +4238,14 @@ async function main() {
     const runningWorkflows = runs.workflow_runs.filter(run => run.status !== 'completed' &&
         run.run_number !== workflow.id);
     console.log(`Found ${runningWorkflows.length} runs in progress.`);
-    for (const { id, head_sha, status } of runningWorkflows) {
-        try {
-            console.log('Cancelling another run: ', { id, head_sha, status });
-            const res = await octokit.actions.cancelWorkflowRun({
-                owner,
-                repo,
-                run_id: id
-            });
-            console.log(`Status ${res.status}`);
-        }
-        catch (e) {
-            const msg = e.message || e;
-            console.log(`Error while cancelling workflow_id ${workflow.id}: ${msg}`);
-        }
+    if (runningWorkflows.length > 0) {
+        console.log("cancel current run, workflow.id: ", workflow.id);
+        const res = await octokit.actions.cancelWorkflowRun({
+            owner,
+            repo,
+            run_id: workflow.id
+        });
+        console.log(`Status ${res.status}`);
     }
     console.log('Done.');
 }
