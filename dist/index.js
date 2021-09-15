@@ -4234,7 +4234,7 @@ async function main() {
         owner,
         repo,
         workflow_id: workflow.id,
-        branch: "master"
+        branch: "master".replace("refs/heads/", "")
     })).data;
     console.log(`runs.workflow_runs.length: ${runs.workflow_runs.length}`);
     const anotherWorkflows = runs.workflow_runs.filter(run => run.status !== 'completed' &&

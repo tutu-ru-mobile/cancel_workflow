@@ -41,7 +41,7 @@ async function main() {
         owner,
         repo,
         workflow_id: workflow.id,
-        branch: "master"//branch
+        branch: "master".replace("refs/heads/", "")
     })).data;
 
 //     const pull_request = github.context.payload.pull_request
