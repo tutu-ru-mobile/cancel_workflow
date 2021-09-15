@@ -4237,16 +4237,18 @@ async function main() {
         branch: "master"
     })).data;
     console.log(`runs.workflow_runs.length: ${runs.workflow_runs.length}`);
-    const runningWorkflows = runs.workflow_runs.filter(run => run.status !== 'completed' &&
-        run.run_number !== workflow.id);
-    console.log(`Found ${runningWorkflows.length} runs in progress.`);
-    console.log("runningWorkflows", runningWorkflows);
-    if (runningWorkflows.length > 0) {
+    const anotherWorkflows = runs.workflow_runs.filter(run => run.status !== 'completed' &&
+        run.head_sha !== github.context.payload.after);
+    const currentWorkflow = runs.workflow_runs.filter(run => run.head_sha === github.context.payload.after)[0];
+    console.log("currentWorkflow", currentWorkflow);
+    console.log(`Found ${anotherWorkflows.length} runs in progress.`);
+    console.log("anotherWorkflows", anotherWorkflows);
+    if (anotherWorkflows.length > 0) {
         console.log("cancel current run, workflow.id: ", workflow.id);
         const res = await octokit.actions.cancelWorkflowRun({
             owner,
             repo,
-            run_id: workflow.id
+            run_id: currentWorkflow.id
         });
         console.log(`Status ${res.status}`);
     }

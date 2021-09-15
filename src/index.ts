@@ -51,23 +51,28 @@ async function main() {
     //console.log("run.run_number: ", run.run_number)
     //console.log("workflow.id: ", workflow.id)
     console.log(`runs.workflow_runs.length: ${runs.workflow_runs.length}`)
-    const runningWorkflows = runs.workflow_runs.filter(
+    const anotherWorkflows = runs.workflow_runs.filter(
         run =>
             run.status !== 'completed' &&  // проверка не завершилась
-            run.run_number !== workflow.id //todo: id is correct ???
+            run.head_sha !== github.context.payload.after
     );
-    console.log(`Found ${runningWorkflows.length} runs in progress.`);
-    console.log("runningWorkflows", runningWorkflows)
-    if (runningWorkflows.length > 0) {
+    const currentWorkflow = runs.workflow_runs.filter(
+        run =>
+            run.head_sha === github.context.payload.after
+    )[0];
+    console.log("currentWorkflow", currentWorkflow)
+    console.log(`Found ${anotherWorkflows.length} runs in progress.`);
+    console.log("anotherWorkflows", anotherWorkflows)
+    if (anotherWorkflows.length > 0) {
         console.log("cancel current run, workflow.id: ", workflow.id)
         const res = await octokit.actions.cancelWorkflowRun({
                         owner,
                         repo,
-                        run_id: workflow.id
+                        run_id: currentWorkflow.id
                     });
                     console.log(`Status ${res.status}`);
     }
-//     for (const {id, head_sha, status} of runningWorkflows) {
+//     for (const {id, head_sha, status} of anotherWorkflows) {
 //         try {
 //             console.log('Cancelling another run: ', {id, head_sha, status});
 //             const res = await octokit.actions.cancelWorkflowRun({
