@@ -29,3 +29,4 @@ jobs:
 - Edit `./src/index.ts`
 - Run `yarn build`
 - Commit changes including `./dist/index.js` bundle
+
